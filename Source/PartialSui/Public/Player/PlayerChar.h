@@ -9,6 +9,16 @@
 
 class USpringArmComponent;
 
+UENUM(BlueprintType)
+enum class EPlayerState : uint8 {
+	Stand UMETA(DisplayName="Standing"),
+	Move UMETA(DisplayName="Moving"),
+	Dodge UMETA(DisplayName="Dodging"),
+	Hang UMETA(DisplayName="Hanging"),
+	Att UMETA(DisplayName="Attacking"),
+	Fall UMETA(DisplayName="Falling")
+};
+
 UCLASS()
 class PARTIALSUI_API APlayerChar : public ACharacter
 {
@@ -21,12 +31,20 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	USpringArmComponent* SpringArmComp;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+    EPlayerState EnumPlayerState;
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	//Functions
+	UFUNCTION(BlueprintCallable)
+		void AttackParameters(class UAnimMontage* MontageToPlay, float PlayRate, bool LastAttack, FName Socket);
+	
+	UFUNCTION(BlueprintCallable)
+		void AttackFunction();
 
 	UFUNCTION(BlueprintNativeEvent)
 		void JumpIt();
@@ -86,7 +104,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Tracing")
 		float WallTraceDistance;
-
 	UPROPERTY(EditAnywhere, Category = "Tracing")
 		float HitTraceDistance;
 
@@ -96,9 +113,23 @@ protected:
 		int CountAttacks;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Battle")
 		bool Dodging;
-
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Battle")
+		bool LastAttack;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Battle")
+		float AttackThreshold;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+		class UAnimMontage* AttackMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+		class UAnimMontage* DodgeMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+		float AttackPlayRate;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+		FName TraceSocket;
+
+
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AllTheOther")
 		FRotator DesiredRotation;
 
 

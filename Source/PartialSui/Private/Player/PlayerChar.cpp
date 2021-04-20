@@ -9,6 +9,7 @@
 #include "DrawDebugHelpers.h"
 
 #define Collision_PlayerHit ECC_GameTraceChannel2
+#define PrintString(String) GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Emerald, String)
 
 // Sets default values
 APlayerChar::APlayerChar()
@@ -25,6 +26,12 @@ APlayerChar::APlayerChar()
 	CountAttacks = 0;
 	Dodging = false;
 	DesiredRotation = FRotator(0.0f, -90.0f, 0.0f);
+	AttackThreshold = 600;
+
+	AttackPlayRate = 1;
+	LastAttack = false;
+
+	EnumPlayerState = EPlayerState::Stand;
 
 }
 
@@ -33,6 +40,31 @@ void APlayerChar::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void APlayerChar::AttackParameters(UAnimMontage* MontageToPlay, float PlayRate, bool Last, FName Socket)
+{
+	AttackMontage = MontageToPlay;
+	LastAttack = Last;
+	AttackPlayRate = PlayRate;
+	TraceSocket = Socket;
+}
+
+void APlayerChar::AttackFunction()
+{
+	if (EnumPlayerState != EPlayerState::Att)
+	{
+		EnumPlayerState = EPlayerState::Att;
+		/*switch (CountAttacks)
+		{
+		case 0:
+
+		case 1:
+
+		case 2:
+
+		}*/
+	}
 }
 
 void APlayerChar::JumpIt_Implementation()
@@ -44,7 +76,10 @@ void APlayerChar::JumpItStop_Implementation()
 }
 
 void APlayerChar::Attack_Implementation()
-{
+{	
+	
+	
+	
 }
 
 void APlayerChar::AttackStop_Implementation()

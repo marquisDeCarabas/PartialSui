@@ -3,6 +3,7 @@
 
 #include "Components/HealthComp.h"
 
+
 // Sets default values for this component's properties
 UHealthComp::UHealthComp()
 {
@@ -40,6 +41,17 @@ void UHealthComp::TakeDamage(AActor* DamagedActor, float Damage, const UDamageTy
 	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
 
 }
+/*
+void UHealthComp::TakeDamage_Implementation(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
+{
+		if (Damage <= 0)
+	{
+		return;
+	}
+
+	CurrentHealth = FMath::Clamp(CurrentHealth - Damage, 0.0f, MaxHealth);
+}
+*/
 
 
 
